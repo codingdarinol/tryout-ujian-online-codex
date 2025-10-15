@@ -1,4 +1,4 @@
-# CLAUDE.md - CodeGuide Starter Kit
+NOTE: This project has been repurposed for the PahamPajak Tryout Admin panel. Ignore any references to Clerk, AI chat, or other starter-kit artifacts below. Consult README.md and tech_doc.md for the authoritative architecture.
 
 This file contains essential context about the project structure, technologies, and conventions to help Claude understand and work effectively within this codebase.
 
@@ -414,3 +414,4 @@ npm run lint         # Run ESLint
 - **Mobile**: Responsive design with TailwindCSS breakpoints
 
 This starter kit provides a solid foundation for building modern web applications with authentication, database integration, AI capabilities, and polished UI components.
+

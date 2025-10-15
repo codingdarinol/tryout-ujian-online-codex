@@ -1,175 +1,98 @@
-# Contributing to CodeGuide Starter Kit
+# Contributing to PahamPajak Tryout Admin
 
-We welcome contributions to the CodeGuide Starter Kit! This document provides guidelines for contributing to the project.
+Thank you for your interest in improving the PahamPajak Tryout Admin project. This document outlines how to work on the codebase efficiently and safely.
 
 ## Getting Started
 
-1. Fork the repository
-2. Clone your fork locally
-3. Install dependencies: `npm install`
-4. Copy `.env.example` to `.env.local` and configure your environment variables
-5. Start the development server: `npm run dev`
-
-## Development Process
-
-### Setting Up Your Development Environment
-
-1. **Prerequisites**:
-   - Node.js 18 or later
-   - npm or yarn package manager
-   - Git
-
-2. **Environment Setup**:
-   - Follow the setup instructions in `SUPABASE_CLERK_SETUP.md`
-   - Ensure all required environment variables are configured
-   - Test the application runs correctly with `npm run dev`
-
-### Making Changes
-
-1. Create a new branch for your feature or bug fix:
+1. **Fork and clone**
    ```bash
-   git checkout -b feature/your-feature-name
+   git clone <your-fork>
+   cd tryout-ujian-online-codex
+   ```
+2. **Install dependencies**
+   ```bash
+   npm install
+   ```
+3. **Environment**
+   - Copy `.env.example` to `.env.local`
+   - Fill in Supabase credentials
+4. **Run Supabase migrations**
+   ```bash
+   supabase db reset
+   ```
+5. **Start the dev server**
+   ```bash
+   npm run dev
    ```
 
-2. Make your changes following our coding standards (see below)
+## Branch & Commit Workflow
 
-3. Test your changes thoroughly:
-   ```bash
-   npm run lint
-   npm run build
-   ```
+```bash
+git checkout -b feature/descriptive-name
+# implement your change
+npm run lint
+git commit -m "feat: concise summary"
+git push origin feature/descriptive-name
+```
 
-4. Commit your changes with a descriptive commit message:
-   ```bash
-   git commit -m "feat: add new feature description"
-   ```
-
-5. Push to your fork and create a pull request
+Keep commits focused and descriptive.
 
 ## Coding Standards
 
-### TypeScript
-- Use strict TypeScript throughout the codebase
-- Define proper types for all props, functions, and API responses
-- Utilize the configured path aliases (`@/`) for imports
+- **TypeScript**: strict mode, no `any`. Use types defined in `src/lib/supabase/types`.
+- **React / Next.js**:
+  - App Router conventions (`src/app`).
+  - Client components only when required (`"use client"`).
+  - Prefer composition and small components.
+- **State & data**:
+  - Auth state via `useAuthStore`.
+  - Data fetching/mutations through hooks in `src/features/**/hooks.ts`.
+  - Always invalidate relevant TanStack Query keys after mutations.
+- **Styling**:
+  - Tailwind utility classes.
+  - Reuse shadcn/ui primitives from `src/components/ui`.
+  - Keep layouts responsive and accessible.
+- **Database**:
+  - Add new SQL inside `supabase/migrations/`.
+  - Maintain RLS using `public.get_my_role()` where appropriate.
+  - Update `src/lib/supabase/types.ts` when schema changes.
 
-### React & Next.js
-- Use server components by default, client components only when needed
-- Follow the established patterns in the codebase
-- Utilize the App Router structure (`/src/app`)
+## Testing & Validation
 
-### Styling
-- Use TailwindCSS for all styling
-- Follow the established design system with shadcn/ui components
-- Support both light and dark themes using CSS custom properties
-- Use existing UI components before creating new ones
+Before submitting a pull request:
 
-### Database
-- All new tables must implement Row Level Security (RLS)
-- Use Clerk user IDs (`auth.jwt() ->> 'sub'`) in RLS policies
-- Follow the established patterns in `supabase/migrations/`
-
-### Code Organization
-- Place reusable utilities in `src/lib/`
-- Use PascalCase for components
-- Group related functionality in appropriate directories
-- Keep components focused and single-purpose
+- [ ] `npm run lint`
+- [ ] `npm run build`
+- [ ] Manual QA of changed flows (create/edit/delete exams or questions as relevant)
+- [ ] Update documentation (README, SUPABASE_SETUP.md, tech notes) if behaviour changes
 
 ## Pull Request Guidelines
 
-### Before Submitting
-- [ ] Code follows the project's style guidelines
-- [ ] Self-review of the code has been performed
-- [ ] Code is properly commented where necessary
-- [ ] Changes have been tested locally
-- [ ] Lint checks pass (`npm run lint`)
-- [ ] Build succeeds (`npm run build`)
+Include in the PR description:
 
-### PR Description
-Please include:
-- Clear description of what the PR does
-- Why the change is needed
-- Screenshots for UI changes
-- Any breaking changes or migration notes
+- Summary of the change
+- Relevant screenshots (UI changes)
+- Notes about migrations or manual steps
+- Any known limitations or follow-up tasks
 
-### Review Process
-- All PRs require at least one review
-- Address all review feedback before merging
-- Maintain a clean git history
+PRs require at least one review. Address all feedback before merging.
 
-## Types of Contributions
+## Directory Overview
 
-### Bug Reports
-When filing a bug report, please include:
-- Clear description of the issue
-- Steps to reproduce
-- Expected vs actual behavior
-- Environment details (OS, Node version, etc.)
-- Screenshots or error logs if applicable
+- `src/app` — Next.js routes (login, admin dashboard, exam/question flows)
+- `src/components` — layout primitives, providers, protected route
+- `src/features` — domain-specific logic (exams, questions)
+- `src/stores` — Zustand stores
+- `supabase/migrations` — SQL migrations, enums, functions, RLS
 
-### Feature Requests
-For new features:
-- Describe the problem you're solving
-- Explain why this feature would be beneficial
-- Consider backward compatibility
-- Discuss implementation approach if applicable
+## Documentation
 
-### Documentation
-- Keep documentation up to date with code changes
-- Improve existing documentation clarity
-- Add examples for complex features
-- Update CLAUDE.md when adding new patterns
+- Update `README.md` for high-level project changes.
+- `SUPABASE_SETUP.md` documents database provisioning.
+- Add inline comments only when necessary to explain non-obvious logic.
 
-## Code Examples
+## Support
 
-### Adding a New Component
-```typescript
-// src/components/ui/my-component.tsx
-import { cn } from "@/lib/utils"
+Questions? Open a GitHub issue or start a discussion in your fork. We appreciate clear bug reports and well-reasoned feature proposals.
 
-interface MyComponentProps {
-  className?: string
-  children: React.ReactNode
-}
-
-export function MyComponent({ className, children }: MyComponentProps) {
-  return (
-    <div className={cn("base-styles", className)}>
-      {children}
-    </div>
-  )
-}
-```
-
-### Database Migration Example
-```sql
--- supabase/migrations/002_new_feature.sql
-CREATE TABLE example_table (
-  id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
-  user_id TEXT NOT NULL,
-  name TEXT NOT NULL,
-  created_at TIMESTAMPTZ DEFAULT NOW()
-);
-
-ALTER TABLE example_table ENABLE ROW LEVEL SECURITY;
-
-CREATE POLICY "Users can manage own records" ON example_table
-  FOR ALL USING (auth.jwt() ->> 'sub' = user_id);
-```
-
-## Community Guidelines
-
-- Be respectful and inclusive
-- Help others learn and grow
-- Provide constructive feedback
-- Follow our code of conduct
-- Ask questions if you're unsure about anything
-
-## Getting Help
-
-- Check existing issues and discussions
-- Review the project documentation
-- Ask questions in pull request discussions
-- Reach out to maintainers for guidance
-
-Thank you for contributing to CodeGuide Starter Kit!
+Happy shipping! 🚀
