@@ -36,7 +36,7 @@ export const ProtectedRoute = ({
       const fallbackRoute = profile.role === "admin" ? "/admin" : "/dashboard";
       router.replace(fallbackRoute);
     }
-  }, [status, profile, roleKey, router]);
+  }, [status, profile, roleKey, router, allowedRoles]);
 
   if (status === "idle" || status === "loading") {
     return (

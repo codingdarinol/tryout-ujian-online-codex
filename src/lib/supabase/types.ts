@@ -281,9 +281,29 @@ export interface Database {
         };
         Returns: number;
       };
+      complete_exam_session: {
+        Args: {
+          session_id_in: string;
+        };
+        Returns: Database["public"]["Tables"]["exam_results"]["Row"];
+      };
       get_my_role: {
         Args: Record<PropertyKey, never>;
         Returns: Database["public"]["Enums"]["user_role"];
+      };
+      record_exam_answer: {
+        Args: {
+          session_id_in: string;
+          question_id_in: string;
+          option_id_in: string | null;
+        };
+        Returns: Database["public"]["Tables"]["exam_sessions"]["Row"];
+      };
+      start_exam_session: {
+        Args: {
+          exam_id_in: string;
+        };
+        Returns: Database["public"]["Tables"]["exam_sessions"]["Row"];
       };
       update_question_with_options: {
         Args: {

@@ -34,6 +34,15 @@ supabase start            # boot Supabase locally (first run only)
 supabase db reset         # apply migrations from the repo
 ```
 
+> ℹ️ **Windows port note**  
+> The Supabase services run on custom ports defined in `supabase/config.toml` to avoid the OS-reserved `5432x` range.  
+> - API/REST/GraphQL: http://127.0.0.1:55431  
+> - Postgres: `postgresql://postgres:postgres@127.0.0.1:55432/postgres`  
+> - Supabase Studio: http://127.0.0.1:55433  
+> - Mail viewer (Mailpit): http://127.0.0.1:55434  
+> - Analytics is disabled locally (`[analytics] enabled = false`) to skip the Docker-on-TCP requirement on Windows.  
+> Update any local tooling or environment variables to use these port values.
+
 ### Remote project
 
 ```bash
@@ -46,6 +55,7 @@ After the migration runs you should see the following resources:
 - Tables: `profiles`, `exams`, `questions`, `question_options`, `exam_sessions`, `exam_results`
 - Types: `user_role`, `option_input`
 - Functions: `get_my_role`, `create_question_with_options`, `update_question_with_options`, `delete_question`, `finalize_exam_session`
+- Trigger: `on_auth_user_created` keeps new `auth.users` rows in sync with `public.profiles`
 - RLS policies restricting write access to admins
 
 ## 3. Create an Admin User

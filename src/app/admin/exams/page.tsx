@@ -103,11 +103,19 @@ export default function ExamListPage() {
               <TableBody>
                 {exams.map((exam) => (
                   <TableRow key={exam.id}>
-                    <TableCell>
-                      <div className="font-medium">{exam.title}</div>
-                      <div className="text-xs text-muted-foreground">
-                        {exam.description}
+                    <TableCell className="align-top">
+                      <div className="max-w-md font-medium leading-tight lg:max-w-lg xl:max-w-xl">
+                        <span className="line-clamp-2 break-words">
+                          {exam.title}
+                        </span>
                       </div>
+                      {exam.description && (
+                        <div className="mt-1 max-w-md text-xs text-muted-foreground leading-relaxed lg:max-w-lg xl:max-w-xl">
+                          <span className="line-clamp-3 break-words">
+                            {exam.description}
+                          </span>
+                        </div>
+                      )}
                     </TableCell>
                     <TableCell className="hidden text-center text-sm text-muted-foreground md:table-cell">
                       {exam.duration_in_minutes} menit
@@ -137,8 +145,8 @@ export default function ExamListPage() {
                         </Badge>
                       </div>
                     </TableCell>
-                    <TableCell>
-                      <div className="flex flex-col items-end gap-2 sm:flex-row sm:justify-end">
+                    <TableCell className="align-top">
+                      <div className="flex flex-wrap justify-end gap-2">
                         <Button variant="outline" size="sm" asChild>
                           <Link href={`/admin/exams/${exam.id}/questions`}>
                             Kelola Soal

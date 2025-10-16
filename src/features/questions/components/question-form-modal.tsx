@@ -5,6 +5,7 @@ import {
   Dialog,
   DialogContent,
   DialogDescription,
+  DialogFooter,
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
@@ -132,7 +133,7 @@ export const QuestionFormModal = ({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-2xl">
+      <DialogContent className="max-w-4xl lg:max-w-5xl">
         <DialogHeader>
           <DialogTitle>{title}</DialogTitle>
           <DialogDescription>{description}</DialogDescription>
@@ -141,46 +142,48 @@ export const QuestionFormModal = ({
         <Form {...form}>
           <form
             onSubmit={form.handleSubmit(handleSubmit)}
-            className="space-y-6"
+            className="grid gap-6 lg:grid-cols-[1.4fr,1.8fr]"
             noValidate
           >
-            <FormField
-              control={form.control}
-              name="question_text"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Pertanyaan</FormLabel>
-                  <FormControl>
-                    <Textarea
-                      rows={4}
-                      placeholder="Tuliskan pertanyaan secara lengkap."
-                      disabled={isSubmitting}
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+            <div className="space-y-6">
+              <FormField
+                control={form.control}
+                name="question_text"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Pertanyaan</FormLabel>
+                    <FormControl>
+                      <Textarea
+                        rows={6}
+                        placeholder="Tuliskan pertanyaan secara lengkap."
+                        disabled={isSubmitting}
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
 
-            <FormField
-              control={form.control}
-              name="explanation"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Penjelasan (opsional)</FormLabel>
-                  <FormControl>
-                    <Textarea
-                      rows={3}
-                      placeholder="Berikan uraian singkat untuk memperkuat pemahaman peserta."
-                      disabled={isSubmitting}
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+              <FormField
+                control={form.control}
+                name="explanation"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Penjelasan (opsional)</FormLabel>
+                    <FormControl>
+                      <Textarea
+                        rows={4}
+                        placeholder="Berikan uraian singkat untuk memperkuat pemahaman peserta."
+                        disabled={isSubmitting}
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
 
             <div className="space-y-3">
               <Label>Pilihan Jawaban</Label>
@@ -192,7 +195,7 @@ export const QuestionFormModal = ({
                 {form.watch("options").map((option, index) => (
                   <div
                     key={option.id ?? index}
-                    className="flex items-start gap-3 rounded-lg border p-3"
+                    className="flex items-start gap-3 rounded-lg border p-3 shadow-sm"
                   >
                     <RadioGroupItem
                       value={String(index)}
@@ -239,7 +242,7 @@ export const QuestionFormModal = ({
               </FormMessage>
             </div>
 
-            <div className="flex justify-end gap-3">
+            <DialogFooter className="lg:col-span-2 flex justify-end gap-3">
               <Button
                 type="button"
                 variant="outline"
@@ -251,7 +254,7 @@ export const QuestionFormModal = ({
               <Button type="submit" disabled={isSubmitting}>
                 {isSubmitting ? "Menyimpan..." : "Simpan"}
               </Button>
-            </div>
+            </DialogFooter>
           </form>
         </Form>
       </DialogContent>
